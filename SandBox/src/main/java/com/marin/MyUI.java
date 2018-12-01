@@ -7,7 +7,9 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -24,20 +26,44 @@ public class MyUI extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        final VerticalLayout layout = new VerticalLayout();
+        final VerticalLayout verLayout = new VerticalLayout();
+        final HorizontalLayout horLayout = new HorizontalLayout();
+        final HorizontalLayout horBtnLayout = new HorizontalLayout();
+        final VerticalLayout verBtnLayout = new VerticalLayout();
         
         final TextField name = new TextField();
         name.setCaption("Type your name here:");
 
         Button button = new Button("Click Me");
         button.addClickListener(e -> {
-            layout.addComponent(new Label("Thanks " + name.getValue() 
+            verLayout.addComponent(new Label("Thanks " + name.getValue() 
                     + ", it works!"));
         });
+        Button btn01 = new Button("Eat Me");
+        btn01.addClickListener(e -> {
+            Notification.show("OI!!!! " + name.getValue() 
+                    + " EAT MY SHORTS!!!!");
+        });
+        Button btn02 = new Button("Drink Me");
+        Button btn03 = new Button("Smell Me");
+        Button rstBtn = new Button("Reset");
+        rstBtn.addClickListener(e -> {
+            verBtnLayout.removeAllComponents();
+            verLayout.removeAllComponents();
+            horLayout.removeAllComponents();
+            verBtnLayout.addComponents(btn01, btn02, btn03, rstBtn);
+            verLayout.addComponents(name, button);
+            horLayout.addComponents(verBtnLayout, verLayout);
+
+            setContent(horLayout);
+            
+        });
+
+        verBtnLayout.addComponents(btn01, btn02, btn03, rstBtn);
+        verLayout.addComponents(name, button);
+        horLayout.addComponents(verBtnLayout, verLayout);
         
-        layout.addComponents(name, button);
-        
-        setContent(layout);
+        setContent(horLayout);
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
