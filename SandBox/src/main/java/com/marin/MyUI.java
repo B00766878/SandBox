@@ -33,6 +33,7 @@ public class MyUI extends UI {
         
         final TextField name = new TextField();
         name.setCaption("Type your name here:");
+        name.setPlaceholder("eg. John");
 
         Button button = new Button("Click Me");
         button.addClickListener(e -> {
